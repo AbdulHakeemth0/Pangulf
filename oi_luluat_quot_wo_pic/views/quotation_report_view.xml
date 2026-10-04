@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paper_format_quote" model="report.paperformat">
+        <field name="name">European A4 low margin</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="header_spacing">23</field>
+        <field name="margin_bottom">28</field>
+        <field name="margin_left">4</field>
+        <field name="margin_right">4</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_quotation" model="ir.actions.report">
+        <field name="name">Quotation - without Pic</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">oi_luluat_quot_wo_pic.report_quotation</field>
+        <field name="report_file">oi_luluat_quot_wo_pic.report_quotation</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="oi_luluat_quot_with_pic.paper_format_quote_pics"/>
+        <field name="print_report_name">(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Sale Order - %s' % (object.name)</field>
+    </record>
+</odoo>

@@ -1,0 +1,461 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <template id="report_quot_doc_po">
+            <t t-call="oi_luluat_quot_with_pic.custom_layout">
+		
+                <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
+                <t t-foreach="docs" t-as="o">
+                   <div class="page" style="font-family:Gotham,GothamBold;">
+			  
+			<table>
+			<style type="text/css">
+            /* Declare fonts */
+            @font-face {
+                font-family: Gotham;
+                src: url(/oi_luluat_sale_order/static/description/Gotham-Font/GothamBook.ttf);
+            }
+	 @font-face {
+                font-family: GothamBold;
+                src: url(/oi_luluat_sale_order/static/description/Gotham-Font/GothamBold.ttf);
+            }
+			table, tr, td, div, span{font-family:Gotham;}
+			table { page-break-inside:auto }
+    tr    { page-break-inside:avoid; page-break-after:auto }
+    thead { display:table-header-group }
+    
+		
+ 				
+				tr{
+				border-spacing:0px;
+				}
+                                td{
+                                padding-left:3px;
+                                padding-top:0px;
+				padding-right:0px;
+				padding-bottom:0px;
+                                }
+				.new {
+  font-size: 45px;
+  font-weight:0.2px; white-space: nowrap;display:inline-block;
+}
+			
+                            </style>
+                        </table>
+
+			<!--<table style="width:100%;">
+				<tr>
+					<td style="width:100%;border:hidden;">
+                                		<img t-att-src="image_data_uri(doc.company_id.logo)" align="bottom" height="90px" style="width:100%;"/>
+                              		</td>
+				</tr>
+			</table>-->
+			
+                            <br/>
+                         <table style="width:100%;margin-bottom:10px;">
+                            <tr>
+                                <td style="border:hidden;width:50%;">
+                                    <table style="border:hidden;width:100%;">
+					<tr>
+					    <td style="line-height:25px;text-align:left;border:hidden;width:100%;">
+						<t t-if="doc.state not in ['draft','sent']">
+							<span class="new" style="overflow:collapse;border:hidden;letter-spacing:2px;color:black;">PURCHASE ORDER</span><br/>#:<span t-field="doc.name"/>
+						</t>
+						<t t-if="doc.state in ['draft','sent']">
+							<span class="new" style="overflow:collapse;border:hidden;letter-spacing:2px;color:black;">PURCHASE QUOTATION</span><br/>#:<span t-field="doc.name"/>
+						</t>
+						
+					    </td>
+					</tr>
+					<tr>
+					    <td style="font-size:16px;border:hidden;width:100%;">
+						
+					    </td>
+					</tr>
+				    </table>
+                                </td>
+				<td style="font-family:Gotham;border:hidden;width:50%;text-align:right;">
+                                    <table style="border:hidden;width:100%;">
+					<tr>
+					    <td style="font-family:Gotham;text-align:right;border:hidden;width:75%;font-size:13px;">
+						<span>Date :</span>
+					    </td>
+					    <td style="font-family:Gotham;text-align:left;border:hidden;width:25%;font-size:13px;">
+						<t t-if="doc.state in ['draft','sent']">
+							<span t-field="doc.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
+						</t>
+						<t t-if="doc.state not in ['draft','sent']">
+							<span t-field="doc.date_order" t-options='{"format": "dd/MM/yyyy"}'/>
+						</t>
+					    </td>
+					</tr>
+					<tr>
+					    <td style="font-family:Gotham;text-align:right;border:hidden;width:75%;font-size:13px;">
+						<span>Ref #:</span>
+					    </td>
+					    <td style="font-family:Gotham;text-align:left;border:hidden;width:25%;font-size:13px;">
+						<span t-field="doc.partner_ref"/>
+					    </td>
+					</tr>
+				    </table>
+                                </td>
+                            </tr>
+                        </table>
+			
+			<table style="border: 1px  solid #c9c8c8;width:100%;">
+				<tr style="border: 1px  solid #c9c8c8;">
+					<td style="padding-left:5px;font-family:GothamBold;font-size:13px;border: 1px  solid #c9c8c8;background-color:  #e6e3e3 ;width:50%;">
+					     <span><center><strong>Bill &amp; Ship To:</strong></center></span>
+					</td>
+					<td style="padding-left:5px;font-family:GothamBold;font-size:13px;style=border: 1px  solid #c9c8c8;background-color:  #e6e3e3 ;width:50%;">
+					     <span><center><strong>Vendor:</strong></center></span>
+					</td>
+					
+				</tr>
+				<tr style="border: 1px  solid #c9c8c8;">
+					<td style="font-family:GothamBold;padding-left:5px;font-size:13px;border-top:hidden;border-bottom:hidden;border-left: 1px  solid #c9c8c8;border-right: 1px  solid #c9c8c8;width:50%;">
+                                            <strong><span style="font-size:13px;" t-field="doc.company_id"/></strong>
+					</td>
+					<td style="padding-left:5px;font-family:GothamBold;font-size:13px;border-top:hidden;border-bottom:hidden;width:50%;">
+					    <strong><span style="font-size:13px;" t-field="doc.partner_id"/></strong>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-left:5px;font-size:13px;border: 1px  solid #c9c8c8;width:50%;">
+						<table style="width:100%;">
+							<tr>
+								<td style="font-family:GothamBold;font-size:13px;border:hidden;width:10%;">
+									<span><strong>TRN:</strong></span>
+								</td>
+								<td style="font-family:GothamBold;font-size:13px;border:hidden;width:90%;">
+									<span t-field="doc.company_id.vat"/>
+								</td>
+							</tr>
+							<tr>
+								<td colspan = "2" style="font-family:Gotham;font-size:13px;border:hidden;width:100%;">
+									<t t-if="doc.company_id.street">
+										<span t-field="doc.company_id.street"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.company_id.street"/>
+									</t>
+									<t t-if="doc.company_id.street2">
+										<span t-field="doc.company_id.street2"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.company_id.street2"/>
+									</t>
+									<t t-if="doc.partner_id.city">
+										<span t-field="doc.company_id.city"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.company_id.city"/>
+									</t>
+									<t t-if="doc.company_id.state_id">
+										<span t-field="doc.company_id.state_id"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.company_id.state_id"/>
+									</t>
+									<t t-if="doc.company_id.country_id">
+										<span t-field="doc.company_id.country_id"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.company_id.country_id"/>
+									</t>
+									<t t-if="doc.company_id.zip">
+										<span t-field="doc.company_id.zip"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.company_id.zip"/>
+									</t>
+									<t t-if="doc.company_id.phone">
+										<span t-field="doc.company_id.phone"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.company_id.phone"/>
+									</t>
+									<t t-if="doc.company_id.email">
+										<span t-field="doc.company_id.email"/>
+									</t>
+									
+									
+								</td>
+							</tr>
+							
+						
+						</table>
+					</td>
+					<td style="padding-left:5px;font-size:13px;border: 1px  solid #c9c8c8;width:50%;">
+						<table style="width:100%;">
+							<tr>
+								<td style="font-family:GothamBold;font-size:13px;border:hidden;width:10%;padding-top:0px">
+									<span><strong>TRN:</strong></span>
+								</td>
+								<td style="font-family:GothamBold;font-size:13px;width:90%;padding-top:0px;">
+									<span t-field="doc.partner_id.vat"/>
+								</td>
+							</tr>
+							<tr>
+								<td colspan = "2" style="font-family:Gotham;font-size:13px;border:hidden;width:100%;">
+									<t t-if="doc.partner_id.street">
+										<span t-field="doc.partner_id.street"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.partner_id.street"/>
+									</t>
+									<t t-if="doc.partner_id.street2">
+										<span t-field="doc.partner_id.street2"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.partner_id.street2"/>
+									</t>
+									<t t-if="doc.partner_id.city">
+										<span t-field="doc.partner_id.city"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.partner_id.city"/>
+									</t>
+									<t t-if="doc.partner_id.state_id">
+										<span t-field="doc.partner_id.state_id"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.partner_id.state_id"/>
+									</t>
+									<t t-if="doc.partner_id.country_id">
+										<span t-field="doc.partner_id.country_id"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.partner_id.country_id"/>
+									</t>
+									<t t-if="doc.partner_id.zip">
+										<span t-field="doc.partner_id.zip"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.partner_id.zip"/>
+									</t>
+									<t t-if="doc.partner_id.phone">
+										<span t-field="doc.partner_id.phone"/>,
+									</t>
+									<t t-else="">
+  										<span t-field="doc.partner_id.phone"/>
+									</t>
+									<t t-if="doc.partner_id.email">
+										<span t-field="doc.partner_id.email"/>
+									</t>
+									
+									
+								</td>
+							</tr>
+						</table>
+						
+					</td>
+				</tr>
+				<tr>
+					<td style="font-family:GothamBold;padding-left:5px;font-size:13px;border-top:hidden;border: 1px  solid #c9c8c8;width:50%;"><strong>Proj.Supervisor:</strong>&#160;<span t-if="doc.proj_supervisor.name" t-field="doc.proj_supervisor.name"/><span t-if="doc.proj_supervisor.work_phone">&#160;|&#160;</span><span t-field="doc.proj_supervisor.work_phone"/></td>
+					<td style="border-top:hidden;font-family:GothamBold;padding-left:5px;font-size:13px;border: 1px  solid #c9c8c8;width:50%;"><strong>Contact Person:</strong>&#160;<span t-if="doc.partner_id.child_ids" t-field="doc.partner_id.child_ids[0].name"/><span t-if="doc.partner_id.child_ids">&#160;|&#160;<span t-field="doc.partner_id.child_ids[0].mobile"/></span></td>
+				</tr>
+			</table>
+			<table style="border:1px solid #c9c8c8;width:100%;margin-top:8px;">
+				<tr style="background-color:  #e6e3e3 ;border:1px  solid #c9c8c8;">
+					<td style="vertical-align:middle;border:1px  solid #c9c8c8;width:25%;text-align:center;font-size:16px;"><b>Delivery Date:</b></td>
+					<td style="vertical-align:middle;border:1px  solid #c9c8c8;width:25%;text-align:center;font-size:16px;"><b>Proj Supervisor</b></td>
+					<!--<td style="vertical-align:middle;border:1px  solid #c9c8c8;width:20%;text-align:center;font-size:16px;"><b>Ref.</b></td>-->
+					<td style="vertical-align:middle;border:1px  solid #c9c8c8;width:25%;text-align:center;font-size:16px;"><b>SO #:</b></td>
+					<td style="vertical-align:middle;border:1px  solid #c9c8c8;width:25%;text-align:center;font-size:16px;"><b>Payment Terms</b></td>
+				</tr>
+				<tr>
+					<td style="vertical-align:middle;border:1px  solid #c9c8c8;width:25%;text-align:center;font-size:16px;"><span t-field="doc.date_planned" t-options='{"format": "dd/MM/yyyy"}'/></td>
+					<td style="vertical-align:middle;border:1px  solid #c9c8c8;width:25%;text-align:center;font-size:16px;"><span t-field="doc.proj_supervisor"/></td>
+					<!--<td style="vertical-align:middle;border:1px  solid #c9c8c8;width:20%;text-align:center;font-size:16px;"><span t-field="doc.partner_ref"/></td>-->
+					<td style="vertical-align:middle;border:1px  solid #c9c8c8;width:25%;text-align:center;font-size:16px;"><span t-field="doc.sale_order.name"/></td>
+					<td style="vertical-align:middle;border:1px  solid #c9c8c8;width:25%;text-align:center;font-size:16px;"><span t-field="doc.payment_term_id"/></td>
+				</tr>
+			</table>
+
+<t t-set="display_tax" t-value="any(o.taxes_id for o in doc.order_line)"/>
+<t t-set="display_discount" t-value="any(o.discount for o in doc.order_line)"/>
+<table style="margin-top:8px;border: 1px  solid #c9c8c8;width:100%;">
+                            <thead>
+                                <tr style="line-height:14px;border: 1px  solid #c9c8c8;background-color:  #e6e3e3 ;">
+				    <td style="vertical-align:middle;font-family:GothamBold;font-size:14px;border: 1px  solid #c9c8c8;width:3%;text-align:center;"><strong>#</strong></td>
+				    <td style="vertical-align:middle;font-family:GothamBold;font-size:14px;border: 1px  solid #c9c8c8;width:32%;text-align:left;padding-left:8px;"><strong>Items &amp; Descriptions</strong></td>
+				    <td style="vertical-align:middle;font-family:GothamBold;font-size:14px;border: 1px  solid #c9c8c8;width:6%;text-align:center;"><strong>Qty</strong></td>
+				    <td style="padding-top:3.5px;vertical-align:middle;line-height:10px;font-family:GothamBold;font-size:14px;border: 1px  solid #c9c8c8;width:10%;text-align:center;"><strong>Price</strong><!--<br/><span style="text-align:center;font-size:9px;">(AED)</span>--></td>
+				    <td style="padding-top:3.5px;vertical-align:middle;line-height:10px;font-family:GothamBold;font-size:14px;border: 1px  solid #c9c8c8;width:10%;text-align:center;"><strong>Total</strong><!--<br/><span style="text-align:center;font-size:9px;">(AED)</span>--></td>
+				    <td t-if="display_discount" style="padding-top:3.5px;vertical-align:middle;line-height:10px;font-family:GothamBold;font-size:14px;border: 1px  solid #c9c8c8;width:10%;text-align:center;"><strong>Discount</strong><br/><span style="text-align:center;font-size:9px;">(AED)</span></td>
+				    <td style="padding-top:3.5px;vertical-align:middle;line-height:10px;font-family:GothamBold;font-size:14px;border: 1px  solid #c9c8c8;width:11%;text-align:center;"><strong>Amount</strong><br/><span style="text-align:center;font-size:9px;">(excl VAT), (AED)</span></td>
+				    <td t-if="display_tax" style="padding-top:3.5px;vertical-align:middle;line-height:10px;font-family:GothamBold;font-size:14px;border: 1px  solid #c9c8c8;width:7%;text-align:center;"><strong>VAT</strong><br/><span style="text-align:center;font-size:9px;">(AED)</span></td>
+				    <td style="padding-top:3.5px;vertical-align:middle;line-height:10px;font-family:GothamBold;font-size:14px;border: 1px  solid #c9c8c8;width:11%;text-align:center;"><strong>Amount</strong><br/><span style="text-align:center;font-size:9px;">(incl VAT), (AED)</span></td>
+                                </tr>
+			</thead>
+                            
+				    
+			<tbody class="sale-tbody"><t t-set="i" t-value="0"/>
+                                <t t-foreach="doc.order_line" t-as="o">
+				
+				<tr t-att-class="'bg-200 font-weight-bold o_line_section' if o.display_type == 'line_section' else 'font-italic o_line_note' if o.display_type == 'line_note' else ''">
+				    <t t-if="not o.display_type">
+				    <td style="font-family:Gotham;text-align:center;border: 1px  solid #c9c8c8;width:3%;">
+					<t t-if="o.display_type != 'line_section' and o.display_type != 'line_note'">
+								<t t-set="i" t-value="i+1"/>
+							</t>
+                                     			<span t-if="o.display_type != 'line_section' and o.display_type != 'line_note'" t-esc="i"/>		
+                                    </td>
+
+
+				    <td style="line-height:15px;font-family:Gotham;padding-left:5px;border: 1px  solid #c9c8c8;width:32%;">
+                                        <strong><span style="font-size:13px;" t-if="o.product_id" t-field="o.product_id"/></strong><br/><span style="font-size:13px;" t-if="o.name" t-field="o.name"/>
+								
+                                    </td>
+				    <td style="font-family:Gotham;border: 1px  solid #c9c8c8;width:6%;text-align:center;">
+					<span style="font-size:13px;" t-field="o.product_qty"/><br/>
+                                        <span style="font-size:10px;" t-field="o.product_uom"  groups="uom.group_uom"/>
+					
+                                    </td>
+				    <td style="font-family:Gotham;border: 1px  solid #c9c8c8;width:10%;text-align:center;">
+					<span style="font-size:13px;" t-field="o.unit_price_bfore_discount" t-options='{"widget": "float", "precision": 2}'/>
+							
+                                        
+                                    </td>
+				    <td style="font-family:Gotham;border: 1px  solid #c9c8c8;width:10%;text-align:center;">
+					
+                                        <span style="font-size:13px;" t-esc="(o.product_qty*o.unit_price_bfore_discount)" t-options='{"widget": "float", "precision": 2}'/>
+                                    </td>
+				    <td t-if="display_discount" style="font-family:Gotham;border: 1px  solid #c9c8c8;width:10%;text-align:center;">
+					
+                                            <span style="font-size:13px;" t-esc="((o.unit_price_bfore_discount*o.discount)/100)" t-options='{"widget": "float", "precision": 2}'/><br/>
+                                            <span style="font-size:10px;" t-field="o.discount" t-options='{"widget": "float", "precision": 2}'/><span style="font-size:10px;">%</span>
+                                    </td>
+				    <td style="font-family:Gotham;border: 1px  solid #c9c8c8;width:11%;text-align:center;">
+					
+                                        <span style="font-size:13px;" t-esc="((o.product_qty*o.unit_price_bfore_discount)-((o.unit_price_bfore_discount*o.discount)/100))" t-options='{"widget": "float", "precision": 2}'/>
+                                    </td>
+				    <td t-if="display_tax" style="font-family:Gotham;border: 1px  solid #c9c8c8;width:7%;text-align:center;">
+					<span style="font-size:13px;" t-field="o.price_tax"/><br/><span style="font-size:10px;" t-if="o.taxes_id" t-field="o.taxes_id"/>
+					
+                                    </td>
+				    <td style="font-family:Gotham;border: 1px  solid #c9c8c8;width:11%;text-align:center;">
+                                        <span style="font-size:13px;" t-field="o.price_total" t-options='{"widget": "float", "precision": 2}'/>
+					
+                                    </td>
+                                 </t>
+				<t t-if="o.display_type == 'line_section'">
+                                <td name="td_section_line" colspan="99" style="border-right:1px solid #c9c8c8;">
+                                    <span t-field="o.name"/>
+                                </td>
+                            </t>
+                            <t t-if="o.display_type == 'line_note'">
+                                <td name="td_note_line" colspan="99" style="border-right:1px solid #c9c8c8;">
+                                    <span t-field="o.name"/>
+                                </td>
+                            </t>
+                                </tr>
+			</t>
+				<tr>
+                               
+                                    <td colspan="5" style="width:70%;font-family:GothamBold;padding-left:5px;padding-right:5px;font-size:12px;background-color:  #e6e3e3 ;border: 1px  solid #c9c8c8;">
+					<span><strong>Amount in words:&#160;</strong><span t-esc="doc.currency_id.amount_to_text(doc.amount_total)"/>&#160;ONLY</span>
+                                    </td>
+                                    <td colspan="4" rowspan="5" style="width:30%;font-family:GothamBold;padding-left:8px;padding-right:8px;font-size:13px;background-color:  #e6e3e3 ;border: 1px  solid #c9c8c8;border-bottom:1 px  solid #c9c8c8;border-left:1px  solid #c9c8c8;">
+					  <div style="width:100%;padding-bottom:5px;">
+					  <div style="width:75%;float:left;text-align:left;">
+						<span style="width:100%;">Sub Total, (AED):</span>
+					  </div>
+					  <div style="width:25%;float:right">
+						<span style="float:right;">
+		<t t-set="i" t-value="0"/>
+                                        <t t-foreach="doc.order_line" t-as="l">
+                                            <t t-set="i" t-value="(i+(l.product_qty*l.unit_price_bfore_discount))"/>
+                                        </t>
+                                        <t t-esc="(i)" t-options='{"widget": "float", "precision": 2}'></t>
+                                    
+
+</span>
+				          </div>
+					</div><br/>
+					<!--<div style="width:100%;padding-bottom:5px;">
+					  <div style="width:75%;float:left;text-align:left;">
+						<span style="width:100%;"><strong><em>Special Discount (<span t-field="o.discount"/>%),(AED):</em></strong></span>
+					  </div>
+					  <div style="width:25%;float:right">
+						<span style="float:right;"><strong><span t-field="doc.discount_amount" t-options='{"widget": "float", "precision": 2}'/></strong></span>
+				          </div>
+					</div><br/>-->
+					<div style="width:100%;padding-bottom:5px;">
+					  <div style="width:75%;float:left;text-align:left;">
+						<span style="width:100%;"><strong>Amount (Excl. VAT), (AED):</strong></span>
+					  </div>
+					  <div style="width:25%;float:right">
+						<span style="width:100%;"><span style="float:right;"><strong><span t-field="doc.amount_untaxed" t-options='{"widget": "float", "precision": 2}'/></strong></span></span>
+				          </div>
+					</div><br/>
+					<div style="width:100%;padding-bottom:5px;">
+					  <div style="width:75%;float:left;text-align:right;">
+						<span style="width:100%;float:right;">Total&#160;<span t-if="doc.amount_tax" t-field="o.taxes_id"/>,&#160;(AED):</span>
+					  </div>
+					  <div style="width:25%;float:right">
+						<span style="width:100%;"><span style="float:right;"><span t-field="doc.amount_tax" t-options='{"widget": "float", "precision": 2}'/></span></span>
+				          </div>
+					</div><br/>
+					<div style="width:100%;padding-bottom:5px;">
+					  <div style="width:75%;float:left;text-align:left;">
+						<span style="width:100%;"><strong>Total Amount (Incl. VAT),(AED):</strong></span>
+					  </div>
+					  <div style="width:25%;float:right">
+						<span style="border:1px  solid #c9c8c8;width:100%;"><span style="float:right;"><strong><span t-field="doc.amount_total" t-options='{"widget": "float", "precision": 2}'/></strong></span></span>
+				          </div>
+					</div><br/>
+				    </td>
+    						
+				</tr>
+				
+                            </tbody>
+                         </table>
+			<br/>
+<div><b>NOTES :</b> </div><span t-field="doc.note"/><br/><br/>
+			<div style="width:100%;line-height: 15px;font-size:16px;float:left;text-align:left;">
+					<div style="padding-top:5px;padding-left:5px;padding-bottom:5px;padding-right:5px;width:30%;font-size:15px;text-align:center;background-color: #dcd8d7 ;"><b>Terms and Conditions:</b></div><br/>
+				<span t-field="doc.purchase_term"/>																	
+			</div>
+<br/><br/>
+<table style="width:100%;">
+				<tr>
+				<td style="width:10%;">
+					<t t-if="doc.enable_sign">
+						<img t-if="doc.company_id.sign" t-att-src="image_data_uri(doc.company_id.sign)" style="vertical-align:top;max-height: 3cm; max-width: 3cm;"/>
+					</t>
+				</td>
+				<td style="font-size:14px;width:30%;text-align:left;"><b>Prepared by:</b><br/><span t-field="doc.user_id"/><hr style="margin-top:0px;width: 60%;
+        margin-right: auto;border:1px  solid #c9c8c8;"/></td>
+				<td style="font-size:14px;width:30%;text-align:left;"><b>Accepted &amp; agreed by:</b><br/>
+					<label for="test"><b style="font-size:12px;">Name:</b></label>
+    						<span>
+        						<input style="border-top:hidden;border-left:hidden;border-right:hidden;" name="test" id="test" size="15" type="text" />
+    						</span><br/>
+					<label for="test"><b style="font-size:12px;">Date:</b></label>
+    						<span>
+        						<input style="border-top:hidden;border-left:hidden;border-right:hidden;" name="test" id="test" size="18" type="text" />
+    						</span>
+				</td>
+				<td style="font-size:14px;width:30%;text-align:left;"><b>Vendor Stamp &amp; Signature:</b></td>
+				</tr>
+			</table>
+
+		</div></t>
+            </t>
+
+        </template>
+
+        <template id="report_quot_po">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                            <t t-call="oi_luluat_purchase_order.report_quot_doc_po" t-lang="doc.partner_id.lang"/>
+                   
+                    </t>
+                </t>
+          
+        </template>
+
+    </data>
+</odoo>

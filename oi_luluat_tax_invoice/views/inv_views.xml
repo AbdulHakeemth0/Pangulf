@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="acc_move_view_form_quotation_number" model="ir.ui.view">
+        <field name="name">Invoice</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+	    <xpath expr="//form/sheet/group/group/field[@name='invoice_date']" position="after">
+                 <field name="proj_supervisor" options="{'no_create': True, 'no_open': True}"/>
+		 <field name="pay_mode"/>
+		 <field name="subj"/>
+		 <field name="cont"/>
+		<field name="driver" options="{'no_create': True, 'no_open': True}"/>
+		<field name="vehicle_no"/>
+            </xpath>
+	    <xpath expr="//form/sheet/notebook/page[@id='invoice_tab']/field[@name='invoice_line_ids']/list/field[@name='tax_ids']" position="after">
+                 <field name="tax_amt" invisible="1"/>
+            </xpath>
+		<xpath expr="//form/sheet/notebook/page[@name='other_info']/group/group[@name='accounting_info_group']/field[@name='company_id']" position="after">
+                 <field name="enable_sign"/>
+            </xpath>
+	   <xpath expr="//field[@name='tax_totals']" position="after">
+                  <field name="total_discount_only" invisible="1"/>
+		  <field name="total_tax_only" invisible="1"/>
+            </xpath>
+        </field>	
+    </record>
+	
+<record id="sale_view_form_quotation_number" model="ir.ui.view">
+        <field name="name">SalesOrder</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+	    <xpath expr="//form/sheet/group/group/field[@name='payment_term_id']" position="after">
+                 <field name="delivery_no" invisible="1"/>
+            </xpath>
+        </field>	
+    </record>
+
+</odoo>

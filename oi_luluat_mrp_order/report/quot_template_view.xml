@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <template id="report_quot_doc_mrp_order">
+            <t t-call="oi_luluat_quot_with_pic.custom_layout">
+                <t t-foreach="docs" t-as="o">
+                   <div class="page" style="font-family:Gotham,GothamBold;">
+			  
+			<table>
+			<style type="text/css">
+            /* Declare fonts */
+            @font-face {
+                font-family: Gotham;
+                src: url(/oi_luluat_sale_order/static/description/Gotham-Font/GothamBook.ttf);
+            }
+	 @font-face {
+                font-family: GothamBold;
+                src: url(/oi_luluat_sale_order/static/description/Gotham-Font/GothamBold.ttf);
+            }
+			table, tr, td, div, span{font-family:Gotham;}
+			table { page-break-inside:auto }
+    tr    { page-break-inside:avoid; page-break-after:auto }
+    thead { display:table-header-group }
+    
+		
+ 				
+				tr{
+				border-spacing:0px;
+				}
+                                td{
+                                padding-left:3px;
+                                padding-top:0px;
+				padding-right:0px;
+				padding-bottom:0px;
+                                }
+				.new {
+  font-size: 45px;
+  font-weight:0.2px; white-space: nowrap;display:inline-block;
+}
+			
+                            </style>
+                        </table>
+
+			<!--<table style="width:100%;">
+				<tr>
+					<td style="width:100%;border:hidden;">
+                                		<img t-att-src="image_data_uri(doc.company_id.logo)" align="bottom" height="90px" style="width:100%;"/>
+                              		</td>
+				</tr>
+			</table>-->
+			
+                            <br/>
+                         <table style="width:100%;margin-bottom:10px;">
+                            <tr>
+                                <td style="border:hidden;width:50%;">
+                                    <table style="border:hidden;width:100%;">
+					<tr>
+					    <td style="line-height:25px;text-align:left;border:hidden;width:100%;">
+						<span class="new" style="overflow:collapse;border:hidden;letter-spacing:1px;color:black;">PRODUCTION ORDER</span><br/>#:<span t-field="doc.name"/>
+					    </td>
+					</tr>
+					<tr>
+					    <td style="font-size:16px;border:hidden;width:100%;">
+						
+					    </td>
+					</tr>
+				    </table>
+                                </td>
+                            </tr>
+                        </table>
+			
+			
+			<t t-set="display_picture" t-value="any(o.product_id.image_1920 for o in doc.move_raw_ids)"/>
+                            <table style="border: 1px  solid #c9c8c8;width:100%;">
+                            <thead>
+                                <tr style="border: 1px  solid #c9c8c8;background-color:  #e6e3e3 ;">
+				    <td style="font-family:GothamBold;font-size:13px;border: 1px  solid #c9c8c8;width:5%;text-align:center;"><strong>#</strong></td>
+				    <td style="font-family:GothamBold;font-size:13px;border: 1px  solid #c9c8c8;width:75%;text-align:left;padding-left:8px;"><strong>Items &amp; Descriptions</strong></td>
+				    <td t-if="display_picture" style="font-family:GothamBold;font-size:13px;border: 1px  solid #c9c8c8;width:10%;text-align:center;"><strong>Picture</strong></td>
+				    <td style="font-family:GothamBold;font-size:13px;border: 1px  solid #c9c8c8;width:10%;text-align:center;"><strong>Quantity</strong><br/><!--<span style="text-align:center;font-size:9px;">(AED)</span>--></td>
+				    </tr>
+			</thead>
+                            
+			    <tbody class="sale-tbody">
+                                <tr t-foreach="doc.move_raw_ids" t-as="o">
+				    <td style="vertical-align:top;text-align:center;font-family:Gotham;text-align:center;border: 1px  solid #c9c8c8;width:5%;">
+					<span t-esc="o_index+1"/>	
+			
+                                    </td>
+				    <td style="vertical-align:top;font-family:Gotham;padding-left:5px;border: 1px  solid #c9c8c8;width:75%;">
+                                        <strong><span style="font-size:13px;" t-if="o.product_id" t-field="o.product_id"/></strong><br/><span style="font-size:13px;" t-if="o.product_id.name" t-field="o.product_id.name"/>
+                                    </td>
+				    <td t-if="display_picture" style="padding-top:4px;vertical-align:middle;align:center;font-family:Gotham;border: 1px  solid #c9c8c8;width:10%;text-align:center;">
+                                        <t t-if="o.product_id.image_1920">
+                                        <img t-att-src="image_data_uri(o.product_id.image_1920)" style="max-height: 1.5cm; max-width: 1.5cm;"/>
+					</t>
+					<t t-else="">
+					<!--<img t-att-src="'/oi_luluat_mrp_order/static/description/image.png'" style="max-height: 1.5cm; max-width: 1.5cm;"/>-->&#160;
+					</t>
+                                    </td>
+				    <td style="vertical-align:top;font-family:Gotham;border: 1px  solid #c9c8c8;width:10%;text-align:center;">
+                                        <span style="font-size:13px;" t-field="o.product_uom_qty"/><br/>
+                                        <span style="font-size:10px;" t-field="o.product_uom"  groups="uom.group_uom"/>
+                                    </td>	    
+                                </tr>
+				
+                            </tbody>
+                         </table>
+
+
+<br/>
+			<table style="width:100%;"><tr>
+			<td style="width:70%;"></td>
+			<td style="width:30%;text-align:left;">
+				<div style="background-color:  #e6e3e3 ;width:100%;border:1px  solid #c9c8c8;padding-left:10px;"><span><b>TOTAL QUANTITY: &#160;&#160;
+				 <t t-set="i" t-value="0"/>
+                                        <t t-foreach="doc.move_raw_ids" t-as="l">
+                                            <t t-set="i" t-value="i+l.product_uom_qty"/>
+                                        </t>
+                                        <t t-esc="(i)" t-options='{"widget": "float", "precision": 2}'></t>
+
+			</b></span></div>
+			</td></tr></table><br/>
+<br/>
+
+			<table style="width:100%;">
+				<tr>
+				<td style="line-height:12px;font-size:13px;width:25%;text-align:left;"><b>Prepared by:</b><br/><br/><span t-field="doc.user_id"/><br/><hr style=" width: 60%;
+        
+        margin-right: auto;border:1px  solid #c9c8c8;"/></td>
+				<td style="line-height:12px;font-size:13px;width:25%;text-align:left;"><b>Authorized by:</b><br/><br/><br/><hr style=" width: 60%;
+        margin-right: auto;border:1px  solid #c9c8c8;"/></td>
+				<td style="line-height:12px;font-size:13px;width:25%;text-align:left;"><b>Verified by:</b><br/><br/><br/><hr style=" width: 50%;
+        margin-right: auto;border:1px  solid #c9c8c8;"/></td>
+				<td style="line-height:12px;font-size:13px;width:25%;text-align:left;"></td>
+				</tr>
+			</table><br/>
+		<div style="width:100%;line-height: 15px;font-size:16px;float:left;text-align:left;">
+					<div style="padding-top:5px;padding-left:5px;padding-bottom:5px;padding-right:5px;width:15%;font-size:15px;text-align:center;background-color: #dcd8d7 ;"><b>NOTES</b></div><br/>
+					<span t-field="doc.note"/>									
+			</div>
+		</div></t>
+            </t>
+
+        </template>
+
+        <template id="report_quot_mrp_order">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                            <t t-call="oi_luluat_mrp_order.report_quot_doc_mrp_order"/>
+                   
+                    </t>
+                </t>
+          
+        </template>
+
+    </data>
+</odoo>

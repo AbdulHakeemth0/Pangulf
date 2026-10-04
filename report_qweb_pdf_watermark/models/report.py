@@ -1,0 +1,142 @@
+# © 2016 Therp BV <http://therp.nl>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+from base64 import b64decode
+from io import BytesIO
+from logging import getLogger
+
+from PIL import Image
+
+from odoo import api, fields, models
+from odoo.tools.safe_eval import safe_eval
+
+try:
+    # we need this to be sure PIL has loaded PDF support
+    from PIL import PdfImagePlugin  # noqa: F401
+except ImportError:
+    pass
+
+logger = getLogger(__name__)
+
+try:
+    try:
+        from PyPDF2 import PdfReader, PdfWriter
+        from PyPDF2.errors import PdfReadError
+    except ImportError:
+        from PyPDF2 import PdfFileReader as PdfReader, PdfFileWriter as PdfWriter  # pylint: disable=W0404
+        from PyPDF2.utils import PdfReadError  # pylint: disable=W0404
+except ImportError:
+    logger.debug("Can not import PyPDF2")
+
+
+def _pdf_pages(reader):
+    if hasattr(reader, "pages"):
+        return reader.pages
+    return [reader.getPage(index) for index in range(reader.getNumPages())]
+
+
+def _merge_pdf_page(target_page, source_page):
+    merge = getattr(target_page, "merge_page", None) or target_page.mergePage
+    merge(source_page)
+
+
+class Report(models.Model):
+    _inherit = "ir.actions.report"
+
+    pdf_watermark = fields.Binary("Watermark")
+    pdf_watermark_expression = fields.Char(
+        "Watermark expression",
+        help="An expression yielding the base64 "
+        "encoded data to be used as watermark. \n"
+        "You have access to variables `env` and `docs`",
+    )
+
+    def _render_qweb_pdf(self, res_ids=None, data=None):
+        if not self.env.context.get("res_ids"):
+            return super(Report, self.with_context(res_ids=res_ids))._render_qweb_pdf(
+                res_ids=res_ids, data=data
+            )
+        return super(Report, self)._render_qweb_pdf(res_ids=res_ids, data=data)
+
+    @api.model
+    def _run_wkhtmltopdf(
+        self,
+        bodies,
+        report_ref=False,
+        header=None,
+        footer=None,
+        landscape=False,
+        specific_paperformat_args=None,
+        set_viewport_size=False,
+    ):
+        result = super(Report, self)._run_wkhtmltopdf(
+            bodies,
+            report_ref=report_ref,
+            header=header,
+            footer=footer,
+            landscape=landscape,
+            specific_paperformat_args=specific_paperformat_args,
+            set_viewport_size=set_viewport_size,
+        )
+
+        docids = self.env.context.get("res_ids", False)
+        watermark = None
+        if self.pdf_watermark:
+            watermark = b64decode(self.pdf_watermark)
+        elif docids:
+            watermark = safe_eval(
+                self.pdf_watermark_expression or "None",
+                dict(env=self.env, docs=self.env[self.model].browse(docids)),
+            )
+            if watermark:
+                watermark = b64decode(watermark)
+
+        if not watermark:
+            return result
+
+        pdf = PdfWriter()
+        pdf_watermark = None
+        try:
+            pdf_watermark = PdfReader(BytesIO(watermark))
+        except PdfReadError:
+            # let's see if we can convert this with pillow
+            try:
+                Image.init()
+                image = Image.open(BytesIO(watermark))
+                pdf_buffer = BytesIO()
+                if image.mode != "RGB":
+                    image = image.convert("RGB")
+                resolution = image.info.get("dpi", self.paperformat_id.dpi or 20)
+                if isinstance(resolution, tuple):
+                    resolution = resolution[0]
+                image.save(pdf_buffer, "pdf", resolution=resolution)
+                pdf_watermark = PdfReader(pdf_buffer)
+            except Exception as e:
+                logger.exception("Failed to load watermark", e)
+
+        if not pdf_watermark:
+            logger.error("No usable watermark found, got %s...", watermark[:100])
+            return result
+
+        watermark_pages = _pdf_pages(pdf_watermark)
+        if len(watermark_pages) < 1:
+            logger.error("Your watermark pdf does not contain any pages")
+            return result
+        if len(watermark_pages) > 1:
+            logger.debug(
+                "Your watermark pdf contains more than one page, "
+                "all but the first one will be ignored"
+            )
+
+        for page in _pdf_pages(PdfReader(BytesIO(result))):
+            media_box = getattr(page, "mediabox", page.mediaBox)
+            width = media_box.width if hasattr(media_box, "width") else media_box.getWidth()
+            height = media_box.height if hasattr(media_box, "height") else media_box.getHeight()
+            add_blank_page = getattr(pdf, "add_blank_page", None) or pdf.addBlankPage
+            watermark_page = add_blank_page(width=width, height=height)
+            _merge_pdf_page(watermark_page, watermark_pages[0])
+            _merge_pdf_page(watermark_page, page)
+
+        pdf_content = BytesIO()
+        pdf.write(pdf_content)
+
+        return pdf_content.getvalue()

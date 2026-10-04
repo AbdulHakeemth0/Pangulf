@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Paper Format -->
+    <record id="paper_format_pi_disc" model="report.paperformat">
+        <field name="name">European A4 low margin</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">30</field>
+        <field name="margin_left">4</field>
+        <field name="margin_right">4</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">2</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- Report Action -->
+    <record id="action_report_pi_disc" model="ir.actions.report">
+        <field name="name">Proforma Invoice</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">oi_luluat_proforma_invoice.report_pi_disc</field>
+        <field name="report_file">oi_luluat_proforma_invoice.report_pi_disc</field>
+        <field name="paperformat_id"
+               ref="oi_luluat_proforma_invoice.paper_format_pi_disc"/>
+        <field name="print_report_name">
+            'PRO-FORMA - %s' % (object.name)
+        </field>
+    </record>
+
+</odoo>

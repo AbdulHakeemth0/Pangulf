@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="saleorder_view_form" model="ir.ui.view">
+        <field name="name">Purchase Order Inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        <field name="arch" type="xml">
+	    <xpath expr="//form/sheet/group/group/field[@name='effective_date']" position="after">
+                 <field name="sale_order" options="{'no_create': True, 'no_open': True}"/>
+		<field name="proj_supervisor" options="{'no_create': True, 'no_open': True}"/>
+            </xpath>
+	    <xpath expr="/form/sheet/notebook/page[@name='purchase_delivery_invoice']" position="after">
+            <page string="Note" name="note">
+                  <field name="note" string="Note" placeholder="Add an internal note that will be printed on the Purchase order"/>
+
+            </page>
+        </xpath>
+	<xpath expr="/form/sheet/notebook/page[@name='purchase_delivery_invoice']/group/group[@name='invoice_info']/field[@name='payment_term_id']" position="after">
+                  <field name="enable_sign"/>
+        </xpath>
+	
+        </field>
+    </record>
+</odoo>

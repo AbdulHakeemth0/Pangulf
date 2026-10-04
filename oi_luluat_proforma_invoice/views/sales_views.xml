@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="so_view_form_quotation_number" model="ir.ui.view">
+        <field name="name">Sale Quotation Number</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+	    <xpath expr="//form/sheet/group/group/field[@name='payment_term_id']" position="after">
+                 <field name="emp_master"/>
+		 <field name="payment_mode"/>
+		 <field name="quote"/>
+            </xpath>
+        </field>
+    </record>
+   
+<record id="payment_mode_tree_view" model="ir.ui.view">
+<field name="name">payment.mode.tree</field>
+<field name="model">payment.mode</field>
+<field name="arch" type="xml">
+<list string="name">
+<field name="name"/> 
+</list>
+</field>
+</record>
+
+<record id="payment_mode_form_view" model="ir.ui.view">
+<field name="name">payment.mode.form</field>
+<field name="model">payment.mode</field>
+<field name="arch" type="xml">
+<form string="name">
+<sheet>
+<group name="payment_mode">
+<group>
+    <field name="name"/>
+</group>
+</group>
+</sheet>
+</form>
+</field>
+</record>
+
+<record id="action_payment_mode" model="ir.actions.act_window">         
+<field name="name">Payment Mode</field>
+<field name="type">ir.actions.act_window</field>
+<field name="res_model">payment.mode</field>
+<field name="view_mode">list,form</field>
+<field name="help" type="html">
+<p class="o_view_nocontent_smiling_face">
+Create the first record</p>
+</field>
+</record>
+
+<menuitem id="payment_mode_menu_config_master" name="Payment Mode"
+sequence="8" parent="sale.menu_sale_config" action="action_payment_mode"/> 
+</odoo>

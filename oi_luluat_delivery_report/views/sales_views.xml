@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="so_view_form" model="ir.ui.view">
+        <field name="name">stock.picking.form.oi.luluat.delivery</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group/group[field[@name='origin']]/field[@name='origin']" position="after">
+                <field name="delivery_type"/>
+                <field name="sale_order" invisible="1"/>
+                <field name="vehicle"/>
+                <field name="driver"/>
+                <field name="supervisor"/>
+            </xpath>
+            <xpath expr="//page[@name='extra']//field[@name='move_type']" position="after">
+                <field name="customer_reference"/>
+            </xpath>
+        </field>
+    </record>
+    <!--<record id="fleet_view_form" model="ir.ui.view">
+        <field name="name">Fleet Delivery Type</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form" />
+        <field name="arch" type="xml">
+	    <xpath expr="//form/sheet/group/group/field[@name='company_id']" position="after">
+                 <field name="delivery_type"/>
+            </xpath>
+        </field>
+    </record>-->
+</odoo>

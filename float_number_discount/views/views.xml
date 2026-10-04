@@ -1,0 +1,81 @@
+<odoo>
+    <record id="view_order_form_inherit_float_discount" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.float.discount</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/form//label[@for='discount']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/form//div[@name='discount']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/form//div[@name='discount']" position="after">
+                <field name="discount_amount"/>
+                <field name="discount_show"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list//field[@name='discount']" position="after">
+                <field name="discount_amount" optional="show"/>
+                <field name="discount_show" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list//field[@name='discount']" position="attributes">
+                <attribute name="optional">hide</attribute>
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+<xpath expr="//group[@name='sale_total']/field[@name='tax_totals']" position="before">
+
+    <div class="d-flex justify-content-end">
+        <table class="o_group o_inner_group o_field_group table table-sm table-borderless w-auto">
+
+            <tr>
+                <td class="text-start pe-4">
+                    <label for="amount_without_discount_tax"/>
+                </td>
+
+                <td class="text-end">
+                    <field name="amount_without_discount_tax"
+                           nolabel="1"
+                           widget="monetary"
+                           options="{'currency_field': 'currency_id'}"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-end pe-4">
+                    <label for="discount"/>
+                </td>
+
+                <td class="text-end">
+                    <field name="discount"
+                           nolabel="1"
+                           widget="monetary"
+                           options="{'currency_field': 'currency_id'}"/>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+</xpath>        </field>
+    </record>
+
+    <record id="view_move_form_inherit_float_discount" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.float.discount</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/list//field[@name='discount']" position="after">
+                <field name="discount_amount" optional="show"/>
+                <field name="discount_show" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/list//field[@name='discount']" position="attributes">
+                <attribute name="optional">hide</attribute>
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/form//field[@name='discount']" position="after">
+                <field name="discount_amount"/>
+                <field name="discount_show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

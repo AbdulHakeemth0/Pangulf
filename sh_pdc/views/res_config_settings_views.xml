@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <!--  Accounting setting -->
+    <record id="sh_pdc_account_setting_inherit" model="ir.ui.view">
+        <field name="name">sh.pdc.account.setting.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='account']" position="inside">
+                <block title="PDC Payment" id="sh_pdc_payment_settings">
+                    <setting string="PDC Accounts">
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label class="col-lg-3 o_light_label" for="pdc_customer"/>
+                                <field name="pdc_customer"/>
+                            </div>
+                            <div class="row mt16">
+                                <label class="col-lg-3 o_light_label" for="pdc_vendor"/>
+                                <field name="pdc_vendor"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+                <block title="Due Notification" id="sh_pdc_due_notification_settings">
+                    <setting string="Customer Notifications">
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label class="col-lg-3 o_light_label" for="is_cust_due_notify"/>
+                                <field name="is_cust_due_notify"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_cust_due_notify">
+                                <label class="col-lg-3 o_light_label" for="is_notify_to_customer"/>
+                                <field name="is_notify_to_customer"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_cust_due_notify">
+                                <label class="col-lg-3 o_light_label" for="is_notify_to_user"/>
+                                <field name="is_notify_to_user"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_cust_due_notify or not is_notify_to_user">
+                                <label class="col-lg-3 o_light_label" for="sh_user_ids"/>
+                                <field name="sh_user_ids" widget="many2many_tags" domain="[('share', '=', False)]"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_cust_due_notify or not (is_notify_to_customer or is_notify_to_user)">
+                                <label class="col-lg-3 o_light_label" for="notify_on_1"/>
+                                <field name="notify_on_1"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_cust_due_notify or not (is_notify_to_customer or is_notify_to_user)">
+                                <label class="col-lg-3 o_light_label" for="notify_on_2"/>
+                                <field name="notify_on_2"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_cust_due_notify or not (is_notify_to_customer or is_notify_to_user)">
+                                <label class="col-lg-3 o_light_label" for="notify_on_3"/>
+                                <field name="notify_on_3"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_cust_due_notify or not (is_notify_to_customer or is_notify_to_user)">
+                                <label class="col-lg-3 o_light_label" for="notify_on_4"/>
+                                <field name="notify_on_4"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_cust_due_notify or not (is_notify_to_customer or is_notify_to_user)">
+                                <label class="col-lg-3 o_light_label" for="notify_on_5"/>
+                                <field name="notify_on_5"/>
+                            </div>
+                        </div>
+                    </setting>
+                    <setting string="Vendor Notifications">
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label class="col-lg-3 o_light_label" for="is_vendor_due_notify"/>
+                                <field name="is_vendor_due_notify"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_vendor_due_notify">
+                                <label class="col-lg-3 o_light_label" for="is_notify_to_vendor"/>
+                                <field name="is_notify_to_vendor"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_vendor_due_notify">
+                                <label class="col-lg-3 o_light_label" for="is_notify_to_user_vendor"/>
+                                <field name="is_notify_to_user_vendor"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_vendor_due_notify or not is_notify_to_user_vendor">
+                                <label class="col-lg-3 o_light_label" for="sh_user_ids_vendor"/>
+                                <field name="sh_user_ids_vendor" widget="many2many_tags" domain="[('share', '=', False)]"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_vendor_due_notify or not (is_notify_to_vendor or is_notify_to_user_vendor)">
+                                <label class="col-lg-3 o_light_label" for="notify_on_1_vendor"/>
+                                <field name="notify_on_1_vendor"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_vendor_due_notify or not (is_notify_to_vendor or is_notify_to_user_vendor)">
+                                <label class="col-lg-3 o_light_label" for="notify_on_2_vendor"/>
+                                <field name="notify_on_2_vendor"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_vendor_due_notify or not (is_notify_to_vendor or is_notify_to_user_vendor)">
+                                <label class="col-lg-3 o_light_label" for="notify_on_3_vendor"/>
+                                <field name="notify_on_3_vendor"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_vendor_due_notify or not (is_notify_to_vendor or is_notify_to_user_vendor)">
+                                <label class="col-lg-3 o_light_label" for="notify_on_4_vendor"/>
+                                <field name="notify_on_4_vendor"/>
+                            </div>
+                            <div class="row mt16" invisible="not is_vendor_due_notify or not (is_notify_to_vendor or is_notify_to_user_vendor)">
+                                <label class="col-lg-3 o_light_label" for="notify_on_5_vendor"/>
+                                <field name="notify_on_5_vendor"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

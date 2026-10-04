@@ -1,0 +1,25 @@
+{
+    'name': 'Delivery Report - with Pic',
+    'author': 'Oodu Implementers Pvt. Ltd',
+    'website': 'http://www.odooimplementers.com',
+    'category': 'Stock',
+    'version': '18.0.1.0.0',
+    'license': 'LGPL-3',
+    'depends': [
+        'base',
+        'stock',
+        'sale',
+        'fleet',
+        'oi_luluat_sale_order',
+        'oi_luluat_quot_with_pic',
+        'oi_luluat_quot_wo_pic',
+    ],
+    'data': [
+        # 'security/ir.model.access.csv',
+        'report/quot_report_view.xml',
+        'report/quot_template_view.xml',
+        'views/sales_views.xml',
+    ],
+    'installable': True,
+    'application': False,
+}

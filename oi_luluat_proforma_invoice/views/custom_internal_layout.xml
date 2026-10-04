@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!--Bridge template-->
+		<template id="custom_bridge_layout">
+			<!-- Multicompany -->
+			<t t-if="not o and doc">	<t t-set="o" t-value="doc"/>	</t>
+				<t t-if="o and 'company_id' in o">
+					<t t-set="company" t-value="o.company_id.sudo()"/></t>
+					<t t-if="not o or not 'company_id' in o">
+						<t t-set="company" t-value="res_company"/></t>
+
+            		<!--call to the header template-->
+			<!-- t-call = "module_name.header template id"-->
+			<t t-call="oi_luluat_sale_order.custom_header_layout"/>
+			<!--call to the body template-->
+			<div class="article"><t t-out="0"/></div>
+			<!--call to the footer template-->
+			<t t-call="oi_luluat_sale_order.custom_footer_layout"/>
+		</template>
+
+
+        <!--Template header-->
+		<template id="custom_header_layout">
+			<div class="header">
+
+				<div style="position: absolute;
+
+		opacity:0.2;
+
+		width:70%;
+
+		text-align:center;
+
+		z-index:99;
+
+
+		-webkit-transform: rotate(0deg); top:500px;">
+
+<img t-att-src="'/oi_luluat_sale_order/static/description/watermarks.png'" style="height:100px;"/> 
+
+</div>
+			</div>
+		</template>
+
+
+        				<!--Template footer-->
+					<template id="custom_footer_layout">
+						<div class="footer">
+							<div class="row" style="width:90%;">
+								<img t-att-src="'/oi_luluat_sale_order/static/description/footer.png'" />
+							</div>
+							<center>
+								<div onclick="window.location:'www.pangulfuae.com'" class="row" style="cursor:pointer;width:20%;">
+     									<a href="#{doc.company_id.website}">www.pangulfuae.com</a>
+  								</div>
+							</center>
+  							<center>
+								<div class="row" style="width:10%;">
+     									<center><span class="page" /> / <span class="topage" /></center>
+  								</div>
+							</center>
+						</div>
+					</template>
+	</data>
+</odoo>
+

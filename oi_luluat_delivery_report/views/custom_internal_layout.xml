@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="custom_bridge_layout">
+            <t t-if="not o and doc">
+                <t t-set="o" t-value="doc"/>
+            </t>
+            <t t-set="company" t-value="o.company_id.sudo() if o and 'company_id' in o else res_company"/>
+            <t t-call="oi_luluat_sale_order.custom_header_layout"/>
+            <div class="article">
+                <t t-out="0"/>
+            </div>
+            <t t-call="oi_luluat_sale_order.custom_footer_layout"/>
+        </template>
+
+        <template id="custom_header_layout">
+            <div class="header"/>
+        </template>
+
+        <template id="custom_footer_layout">
+            <div class="footer">
+                <div class="row" style="width:90%;">
+                    <img t-att-src="'/oi_luluat_sale_order/static/description/footer.png'"/>
+                </div>
+                <center>
+                    <div onclick="window.location:'www.pangulfuae.com'" class="row" style="cursor:pointer;width:20%;">
+                        <a t-att-href="doc.company_id.website or '#'">www.pangulfuae.com</a>
+                    </div>
+                </center>
+                <center>
+                    <div class="row" style="width:10%;">
+                        <center><span class="page"/> / <span class="topage"/></center>
+                    </div>
+                </center>
+            </div>
+        </template>
+    </data>
+</odoo>

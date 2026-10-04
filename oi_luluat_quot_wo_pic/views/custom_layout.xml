@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		<!--Bridge template-->
+		<template id="custom_layout">
+			<!-- Multicompany -->
+			<t t-if="not o and doc">	<t t-set="o" t-value="doc"/>	</t>
+				<t t-if="o and 'company_id' in o">
+					<t t-set="company" t-value="o.company_id.sudo()"/></t>
+					<t t-if="not o or not 'company_id' in o">
+						<t t-set="company" t-value="res_company"/></t>
+
+            		<!--call to the header template-->
+			<!-- t-call = "module_name.header template id"-->
+			<t t-call="oi_luluat_quot_wo_pic.custom_header_layout"/>
+			<!--call to the body template-->
+			<div class="article"><t t-out="0"/></div>
+			<!--call to the footer template-->
+			<t t-call="oi_luluat_quot_wo_pic.custom_footer_layout"/>
+		</template>
+
+
+        <!--Template header-->
+		<template id="custom_header_layout">
+			<div class="header">
+				<table style="width:100%;">
+				<tr>
+					<td style="width:100%;border:hidden;">
+                                		<img t-att-src="image_data_uri(doc.company_id.logo)" align="bottom" height="90px" style="width:100%;"/><br/>
+                              		</td>
+				</tr>
+			</table>
+
+			</div>
+		</template>
+        <!--Template footer-->
+		<template id="custom_footer_layout">
+			<div class="footer" style="width:100%;">
+				<!--<div style="width:25%;float:left;">
+                                		<img t-att-src="'/oi_luluat_quot_wo_pic/static/description/dubaiend.png'" />
+                              		</div>
+					<div style="width:75%;font-size:14px;float:left;display:inline-block;padding-left:0px;padding-right:2px;">
+							<span t-if="doc.company_id.phone">Head Office Tel:<span t-field="doc.company_id.phone"/></span>
+							<span t-if="doc.company_id.fax"> |</span>
+							<span t-if="doc.company_id.fax"> Fax:<span t-field="doc.company_id.fax"/></span>
+							<span t-if="doc.company_id.street"> |</span>
+							<span t-if="doc.company_id.street"> Location:<span t-field="doc.company_id.street"/></span>
+							<span t-if="doc.company_id.street2">,</span>
+							<span t-if="doc.company_id.street2" t-field="doc.company_id.street2"/>
+							<span t-if="doc.company_id.city">,</span>
+							<span t-if="doc.company_id.city" t-field="doc.company_id.city"/>
+							<span t-if="doc.company_id.state_id">,</span>
+							<span t-if="doc.company_id.state_id" t-field="doc.company_id.state_id"/>
+							<span t-if="doc.company_id.country_id">,</span>
+							<span t-if="doc.company_id.country_id" t-field="doc.company_id.country_id"/>
+							<span t-if="doc.company_id.zip">|</span>
+							<span t-if="doc.company_id.zip">Box:<span t-field="doc.company_id.zip"/></span>
+							<span t-if="doc.company_id.email">|</span>
+							<span t-if="doc.company_id.email">Email:<span t-field="doc.company_id.email"/></span>
+							<span t-if="doc.company_id.website">|</span>
+							<span t-if="doc.company_id.website" t-field="doc.company_id.website"/>
+                              		</div>	-->
+							<div class="row" style="width:100%;">
+								<a href="https://www.pangulfuae.com/">
+     								<img t-att-src="image_data_uri(doc.company_id.footer)" align="center" height="100px" style="width:120%;"/></a>
+								<!--<div style="width:70%;align:left;">
+								<hr style="width:100%;border:1px solid black;"/>
+								<img style="width:100%;height:40px;align:left;" t-att-src="'/oi_luluat_sale_order/static/description/footer.png'" /><br/>
+								<center>
+								<div onclick="window.location:'www.pangulfuae.com'" class="row" style="cursor:pointer;width:20%;">
+     									<a href="#{doc.company_id.website}">www.pangulfuae.com</a>
+  								</div>
+								</center>
+								</div>
+								<div style="width:30%;align:right;">
+								<img style="width:100%;height:80px;align:left;" t-att-src="'/oi_luluat_sale_order/static/description/log.png'" />
+								</div>-->
+				
+							</div>
+		
+								<div class="row" style="width:10%;">
+     									<center><span class="page" /> / <span class="topage" /></center>
+  								</div>
+							
+						
+							
+			</div>
+		</template>
+</odoo>
